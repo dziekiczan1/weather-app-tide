@@ -3,48 +3,61 @@
 import { useState } from "react";
 import { Plus, MapPin, Edit2 } from "lucide-react";
 
-import { CityForm } from "@/components/city/city-form";
+import { CityForm } from "./city-form";
+import { CityList } from "./city-list";
 import { CardWrapper } from "@/components/ui/card-wrapper";
-import { CityList } from "@/components/city/city-list";
-import { City, CityManagerProps } from "@/components/city/types";
+import { City, CityManagerProps } from "./types";
 
 export const CityManager = ({ initialCities }: CityManagerProps) => {
-  const [editingCity, setEditingCity] = useState<City | null>(null);
   const [cities, setCities] = useState<City[]>(initialCities);
+  const [selectedCity, setSelectedCity] = useState<City | null>(null);
+  const [isEditing, setIsEditing] = useState(false);
+
+  const handleSelectCity = (city: City) => {
+    setSelectedCity(city);
+    setIsEditing(false);
+  };
 
   const handleEditCity = (city: City) => {
-    setEditingCity(city);
+    setSelectedCity(city);
+    setIsEditing(true);
   };
 
   const handleCancelEdit = () => {
-    setEditingCity(null);
+    setIsEditing(false);
   };
 
   const handleAddSuccess = (newCity: City) => {
     setCities((prev) => [newCity, ...prev]);
+    setSelectedCity(newCity);
   };
 
   const handleUpdateSuccess = (updatedCity: City) => {
     setCities((prev) =>
       prev.map((city) => (city.id === updatedCity.id ? updatedCity : city)),
     );
-    setEditingCity(null);
+    setSelectedCity(updatedCity);
+    setIsEditing(false);
   };
 
   const handleDeleteSuccess = (cityId: string) => {
     setCities((prev) => prev.filter((city) => city.id !== cityId));
-    if (editingCity?.id === cityId) {
-      setEditingCity(null);
+
+    if (selectedCity?.id === cityId) {
+      setSelectedCity(null);
+      setIsEditing(false);
     }
   };
+
+  const editingCity = isEditing ? selectedCity : null;
 
   return (
     <div className="grid lg:grid-cols-3 gap-6">
       <CardWrapper
-        heading={editingCity ? "Edit City" : "Add City"}
-        icon={editingCity ? Edit2 : Plus}
+        heading={isEditing ? "Edit City" : "Add City"}
+        icon={isEditing ? Edit2 : Plus}
         iconGradient={
-          editingCity
+          isEditing
             ? "from-amber-400 to-orange-500"
             : "from-purple-400 to-indigo-500"
         }
@@ -66,7 +79,9 @@ export const CityManager = ({ initialCities }: CityManagerProps) => {
           cities={cities}
           onEdit={handleEditCity}
           onDelete={handleDeleteSuccess}
+          onSelect={handleSelectCity}
           editingCityId={editingCity?.id}
+          selectedCityId={selectedCity?.id}
         />
       </CardWrapper>
     </div>
