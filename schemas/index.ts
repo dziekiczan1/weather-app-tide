@@ -5,5 +5,8 @@ export const CitySchema = z.object({
     .string()
     .min(1, "City name is required")
     .max(100, "City name is too long"),
-  country: z.string().optional(),
+  country: z
+    .string()
+    .min(2, "Country code is too short")
+    .max(2, "Country code is too long"),
 });
