@@ -1,24 +1,20 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, Edit2 } from "lucide-react";
+import { Plus, MapPin, Edit2 } from "lucide-react";
 
 import { CityForm } from "@/components/city/city-form";
 import { CardWrapper } from "@/components/ui/card-wrapper";
-
-interface City {
-  id: string;
-  name: string;
-  country: string;
-}
-
-interface CityManagerProps {
-  initialCities: City[];
-}
+import { CityList } from "@/components/city/city-list";
+import { City, CityManagerProps } from "@/components/city/types";
 
 export const CityManager = ({ initialCities }: CityManagerProps) => {
   const [editingCity, setEditingCity] = useState<City | null>(null);
   const [cities, setCities] = useState<City[]>(initialCities);
+
+  const handleEditCity = (city: City) => {
+    setEditingCity(city);
+  };
 
   const handleCancelEdit = () => {
     setEditingCity(null);
@@ -58,6 +54,19 @@ export const CityManager = ({ initialCities }: CityManagerProps) => {
           onCancelEdit={handleCancelEdit}
           onAddSuccess={handleAddSuccess}
           onSuccess={handleUpdateSuccess}
+        />
+      </CardWrapper>
+
+      <CardWrapper
+        heading="Saved Cities"
+        icon={MapPin}
+        iconGradient="from-emerald-400 to-cyan-500"
+      >
+        <CityList
+          cities={cities}
+          onEdit={handleEditCity}
+          onDelete={handleDeleteSuccess}
+          editingCityId={editingCity?.id}
         />
       </CardWrapper>
     </div>

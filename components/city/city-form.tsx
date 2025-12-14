@@ -19,19 +19,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { addCity, updateCity } from "@/actions/city";
 import { FormAlert } from "@/components/form-alert";
-
-interface City {
-  id: string;
-  name: string;
-  country: string;
-}
-
-interface CityFormProps {
-  editingCity?: City | null;
-  onCancelEdit?: () => void;
-  onAddSuccess?: (city: City) => void;
-  onSuccess?: (city: City) => void;
-}
+import { CityFormProps } from "@/components/city/types";
 
 export const CityForm = ({
   editingCity,
