@@ -1,8 +1,9 @@
-import { CityForm } from "@/components/city/city-form";
-import { CardWrapper } from "@/components/ui/card-wrapper";
-import { Plus } from "lucide-react";
+import { getCities } from "@/actions/city";
+import { CityManager } from "@/components/city/city-manager";
 
-export default function Page() {
+export default async function Page() {
+  const cities = await getCities();
+
   return (
     <main>
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
@@ -12,11 +13,7 @@ export default function Page() {
       </div>
 
       <div className="relative z-10 max-w-6xl mx-auto">
-        <div className="grid lg:grid-cols-3 gap-6">
-          <CardWrapper heading="Add City" icon={Plus}>
-            <CityForm />
-          </CardWrapper>
-        </div>
+        <CityManager initialCities={cities} />
       </div>
     </main>
   );
