@@ -23,7 +23,7 @@ export const CardWrapper = ({
         className,
       )}
     >
-      <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+      <h2 className="text-xl font-semibold mb-8 flex items-center gap-2">
         <span
           className={cn(
             "p-2 rounded-md bg-gradient-to-br text-white",

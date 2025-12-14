@@ -134,7 +134,7 @@ export const CityForm = ({
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-slate-300 text-sm font-medium">
-                City Name
+                City name
               </FormLabel>
               <FormControl>
                 <Input
@@ -143,7 +143,7 @@ export const CityForm = ({
                   disabled={isPending}
                   placeholder="Enter city name"
                   type="text"
-                  className="bg-white/5 border-white/10 text-white placeholder:text-slate-500 rounded-md h-12 transition-all duration-200 hover: bg-white/10"
+                  className="bg-white/5 border-white/10 text-white placeholder:text-slate-400 rounded-md h-12 transition-all duration-200 hover:bg-white/10"
                 />
               </FormControl>
               <FormMessage />
@@ -165,7 +165,7 @@ export const CityForm = ({
                   id={`${formId}-country`}
                   disabled={isPending}
                   placeholder="Enter country code (PL, US)"
-                  className="bg-white/5 border-white/10 text-white placeholder:text-slate-500 rounded-md h-12 transition-all duration-200 hover: bg-white/10 uppercase placeholder:normal-case"
+                  className="bg-white/5 border-white/10 text-white placeholder:text-slate-400 rounded-md h-12 transition-all duration-200 hover:bg-white/10 uppercase placeholder:normal-case"
                   type="text"
                   maxLength={2}
                 />
