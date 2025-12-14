@@ -1,9 +1,23 @@
-export default function Home() {
+import { CityForm } from "@/components/city/city-form";
+import { CardWrapper } from "@/components/ui/card-wrapper";
+import { Plus } from "lucide-react";
+
+export default function Page() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        Weather app
-      </main>
-    </div>
+    <main>
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500/20 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute top-1/2 -left-40 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl animate-pulse delay-1000" />
+        <div className="absolute -bottom-40 right-1/3 w-72 h-72 bg-indigo-500/20 rounded-full blur-3xl animate-pulse delay-500" />
+      </div>
+
+      <div className="relative z-10 max-w-6xl mx-auto">
+        <div className="grid lg:grid-cols-3 gap-6">
+          <CardWrapper heading="Add City" icon={Plus}>
+            <CityForm />
+          </CardWrapper>
+        </div>
+      </div>
+    </main>
   );
 }
