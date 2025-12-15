@@ -72,7 +72,7 @@ export const CityList = ({
           style={{ height: `${calculatedHeight}px` }}
           className={cn(
             "overflow-y-auto custom-scrollbar",
-            hasScrollbar && "pr-2",
+            hasScrollbar && "pr-4",
           )}
         >
           <div
