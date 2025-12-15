@@ -76,7 +76,7 @@ export const CityForm = ({
             onSuccess?.({
               id: editingCity.id,
               name: values.name.toLowerCase(),
-              country: values.country?.toUpperCase(),
+              country: values.country.toUpperCase(),
             });
             onCancelEdit?.();
           }

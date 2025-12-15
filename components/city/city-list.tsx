@@ -26,7 +26,7 @@ export const CityList = ({
   const filteredCities = cities.filter(
     (city) =>
       city.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      city.country?.toLowerCase().includes(searchQuery.toLowerCase()),
+      city.country.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   const hasScrollbar = filteredCities.length > visibleItems;

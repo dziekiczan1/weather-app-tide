@@ -83,7 +83,7 @@ export const CityItem = ({
         </span>
       )}
 
-      <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+      <div className="flex items-center gap-1 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-200">
         <button
           onClick={(e) => {
             e.stopPropagation();
@@ -97,7 +97,7 @@ export const CityItem = ({
               : "hover: bg-white/10",
           )}
         >
-          <Edit2 className="w-4 h-4 text-slate-400 hover: text-white" />
+          <Edit2 className="w-4 h-4 text-slate-400 hover:text-white" />
         </button>
 
         <AlertDialog>
@@ -122,12 +122,12 @@ export const CityItem = ({
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel className="bg-white/5 border-white/10 text-white hover: bg-white/10">
+              <AlertDialogCancel className="bg-white/5 border-white/10 text-white hover:bg-white/10">
                 Cancel
               </AlertDialogCancel>
               <AlertDialogAction
                 onClick={onDelete}
-                className="bg-red-500 hover: bg-red-600 text-white"
+                className="bg-red-500 hover:bg-red-600 text-white"
               >
                 Delete
               </AlertDialogAction>

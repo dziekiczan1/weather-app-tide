@@ -1,6 +1,7 @@
 import { LucideIcon } from "lucide-react";
 
-export const BASE_URL = "https://api.openweathermap.org/data/2.5/weather";
+export const OPENWEATHER_BASE_URL =
+  "https://api.openweathermap.org/data/2.5/weather";
 
 export interface WeatherData {
   temp: number;

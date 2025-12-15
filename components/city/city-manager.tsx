@@ -41,8 +41,13 @@ export const CityManager = ({ initialCities }: CityManagerProps) => {
   }, [selectedCity]);
 
   const handleSelectCity = (city: City) => {
-    setSelectedCity(city);
-    setIsEditing(false);
+    if (selectedCity?.id === city.id) {
+      setSelectedCity(null);
+      setIsEditing(false);
+    } else {
+      setSelectedCity(city);
+      setIsEditing(false);
+    }
   };
 
   const handleEditCity = (city: City) => {
