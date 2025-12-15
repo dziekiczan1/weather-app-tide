@@ -1,3 +1,5 @@
+import { LucideIcon } from "lucide-react";
+
 export const BASE_URL = "https://api.openweathermap.org/data/2.5/weather";
 
 export interface WeatherData {
@@ -15,4 +17,15 @@ export interface WeatherCardProps {
   weather: WeatherData | null;
   isLoading: boolean;
   error?: string;
+}
+
+export interface WeatherStatProps {
+  icon: LucideIcon;
+  label: string;
+  value: string | number;
+  unit?: string;
+}
+
+export interface WeatherStatsProps {
+  weather: WeatherData;
 }
