@@ -143,7 +143,7 @@ export const CityForm = ({
                   disabled={isPending}
                   placeholder="Enter city name"
                   type="text"
-                  className="bg-white/5 border-white/10 text-white placeholder:text-slate-400 rounded-md h-12 transition-all duration-200 hover:bg-white/10"
+                  className="bg-white/5 border-white/10 text-white placeholder:text-slate-400 rounded-md h-12 transition-all duration-200 hover:bg-white/10 capitalize placeholder:normal-case"
                 />
               </FormControl>
               <FormMessage />

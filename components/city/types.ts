@@ -1,7 +1,7 @@
 export interface City {
   id: string;
   name: string;
-  country: string | null;
+  country: string;
 }
 
 export interface CityFormProps {

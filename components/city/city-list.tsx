@@ -4,14 +4,10 @@ import { useState, useRef, useTransition } from "react";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { cn } from "@/lib/utils";
 import { deleteCity } from "@/actions/city";
-import { CityListProps } from "./types";
+import { CityListProps, ITEM_HEIGHT, ITEM_TOTAL } from "./types";
 import { CityItem } from "./city-item";
 import { CitySearch } from "./city-search";
 import { CityEmptyState } from "./city-empty-state";
-
-const ITEM_HEIGHT = 56;
-const ITEM_GAP = 8;
-const ITEM_TOTAL = ITEM_HEIGHT + ITEM_GAP;
 
 export const CityList = ({
   cities,
