@@ -1,3 +1,7 @@
+export const ITEM_HEIGHT = 56;
+export const ITEM_GAP = 8;
+export const ITEM_TOTAL = ITEM_HEIGHT + ITEM_GAP;
+
 export interface City {
   id: string;
   name: string;

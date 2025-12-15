@@ -1,0 +1,43 @@
+"use server";
+
+import { BASE_URL, WeatherData } from "@/components/weather/types";
+
+export const getWeather = async (
+  cityName: string,
+  country: string,
+): Promise<{ data?: WeatherData; error?: string }> => {
+  if (!process.env.NEXT_OPENWEATHER_API_KEY) {
+    return { error: "API key not configured" };
+  }
+
+  try {
+    const query = `${cityName},${country}`;
+    const url = `${BASE_URL}?q=${encodeURIComponent(query)}&appid=${process.env.NEXT_OPENWEATHER_API_KEY}&units=metric`;
+
+    const response = await fetch(url, { next: { revalidate: 300 } });
+
+    if (!response.ok) {
+      if (response.status === 404) {
+        return { error: "City not found" };
+      }
+      return { error: "Failed to fetch weather data" };
+    }
+
+    const data = await response.json();
+
+    const weatherData: WeatherData = {
+      temp: Math.round(data.main.temp),
+      feels_like: Math.round(data.main.feels_like),
+      humidity: data.main.humidity,
+      description: data.weather[0].description,
+      icon: data.weather[0].icon,
+      wind_speed: Math.round(data.wind.speed * 3.6),
+      city_name: data.name,
+      country: data.sys.country,
+    };
+
+    return { data: weatherData };
+  } catch (error) {
+    return { error: "Something went wrong" };
+  }
+};
