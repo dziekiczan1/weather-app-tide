@@ -1,6 +1,6 @@
 "use server";
 
-import { BASE_URL, WeatherData } from "@/components/weather/types";
+import { OPENWEATHER_BASE_URL, WeatherData } from "@/components/weather/types";
 
 export const getWeather = async (
   cityName: string,
@@ -12,7 +12,7 @@ export const getWeather = async (
 
   try {
     const query = `${cityName},${country}`;
-    const url = `${BASE_URL}?q=${encodeURIComponent(query)}&appid=${process.env.NEXT_OPENWEATHER_API_KEY}&units=metric`;
+    const url = `${OPENWEATHER_BASE_URL}?q=${encodeURIComponent(query)}&appid=${process.env.NEXT_OPENWEATHER_API_KEY}&units=metric`;
 
     const response = await fetch(url, { next: { revalidate: 300 } });
 
