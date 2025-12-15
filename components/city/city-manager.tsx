@@ -1,17 +1,44 @@
 "use client";
 
-import { useState } from "react";
-import { Plus, MapPin, Edit2 } from "lucide-react";
+import { useEffect, useState, useTransition } from "react";
+import { Plus, MapPin, Edit2, Cloud } from "lucide-react";
 
 import { CityForm } from "./city-form";
 import { CityList } from "./city-list";
 import { CardWrapper } from "@/components/ui/card-wrapper";
 import { City, CityManagerProps } from "./types";
+import { getWeather } from "@/actions/weather";
+import { WeatherData } from "@/components/weather/types";
+import { WeatherCard } from "@/components/weather/weather-card";
+import { capitalize } from "@/lib/utils";
 
 export const CityManager = ({ initialCities }: CityManagerProps) => {
   const [cities, setCities] = useState<City[]>(initialCities);
   const [selectedCity, setSelectedCity] = useState<City | null>(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [weather, setWeather] = useState<WeatherData | null>(null);
+  const [weatherError, setWeatherError] = useState<string>();
+  const [isLoadingWeather, startWeatherTransition] = useTransition();
+
+  useEffect(() => {
+    if (!selectedCity) {
+      setWeather(null);
+      setWeatherError(undefined);
+      return;
+    }
+
+    startWeatherTransition(async () => {
+      const result = await getWeather(selectedCity.name, selectedCity.country);
+
+      if (result.error) {
+        setWeatherError(result.error);
+        setWeather(null);
+      } else if (result.data) {
+        setWeather(result.data);
+        setWeatherError(undefined);
+      }
+    });
+  }, [selectedCity]);
 
   const handleSelectCity = (city: City) => {
     setSelectedCity(city);
@@ -54,10 +81,10 @@ export const CityManager = ({ initialCities }: CityManagerProps) => {
   return (
     <div className="grid lg:grid-cols-3 gap-6">
       <CardWrapper
-        heading={isEditing ? "Edit City" : "Add City"}
-        icon={isEditing ? Edit2 : Plus}
+        heading={editingCity ? "Edit City" : "Add City"}
+        icon={editingCity ? Edit2 : Plus}
         iconGradient={
-          isEditing
+          editingCity
             ? "from-amber-400 to-orange-500"
             : "from-purple-400 to-indigo-500"
         }
@@ -82,6 +109,22 @@ export const CityManager = ({ initialCities }: CityManagerProps) => {
           onSelect={handleSelectCity}
           editingCityId={editingCity?.id}
           selectedCityId={selectedCity?.id}
+        />
+      </CardWrapper>
+
+      <CardWrapper
+        heading={
+          selectedCity
+            ? `Weather in ${capitalize(selectedCity.name)}`
+            : "Weather"
+        }
+        icon={Cloud}
+        iconGradient="from-blue-400 to-cyan-500"
+      >
+        <WeatherCard
+          weather={weather}
+          isLoading={isLoadingWeather}
+          error={weatherError}
         />
       </CardWrapper>
     </div>
