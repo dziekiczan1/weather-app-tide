@@ -6,13 +6,13 @@ export const getWeather = async (
   cityName: string,
   country: string,
 ): Promise<{ data?: WeatherData; error?: string }> => {
-  if (!process.env.NEXT_OPENWEATHER_API_KEY) {
+  if (!process.env.OPENWEATHER_API_KEY) {
     return { error: "API key not configured" };
   }
 
   try {
     const query = `${cityName},${country}`;
-    const url = `${OPENWEATHER_BASE_URL}?q=${encodeURIComponent(query)}&appid=${process.env.NEXT_OPENWEATHER_API_KEY}&units=metric`;
+    const url = `${OPENWEATHER_BASE_URL}?q=${encodeURIComponent(query)}&appid=${process.env.OPENWEATHER_API_KEY}&units=metric`;
 
     const response = await fetch(url, { next: { revalidate: 300 } });
 

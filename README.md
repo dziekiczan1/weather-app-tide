@@ -84,7 +84,7 @@ weather-app-tide/
 
    ```env
    DATABASE_URL="postgresql://user:password@localhost: 5432/weather_app"
-   NEXT_OPENWEATHER_API_KEY="your_openweather_api_key"
+   OPENWEATHER_API_KEY="your_openweather_api_key"
    ```
 
 4. **Set up the database**
@@ -107,7 +107,7 @@ weather-app-tide/
 | Variable                   | Description                  | Required |
 | -------------------------- | ---------------------------- | -------- |
 | `DATABASE_URL`             | PostgreSQL connection string | Yes      |
-| `NEXT_OPENWEATHER_API_KEY` | OpenWeather API key          | Yes      |
+| `OPENWEATHER_API_KEY` | OpenWeather API key          | Yes      |
 
 ## 🔧 Scripts
 

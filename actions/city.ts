@@ -55,13 +55,13 @@ const validateCityExists = async (
   name: string,
   country: string,
 ): Promise<{ valid: boolean; cityName?: string; countryCode?: string }> => {
-  if (!process.env.NEXT_OPENWEATHER_API_KEY) {
+  if (!process.env.OPENWEATHER_API_KEY) {
     return { valid: true };
   }
 
   try {
     const query = country ? `${name},${country}` : name;
-    const url = `${OPENWEATHER_BASE_URL}?q=${encodeURIComponent(query)}&appid=${process.env.NEXT_OPENWEATHER_API_KEY}`;
+    const url = `${OPENWEATHER_BASE_URL}?q=${encodeURIComponent(query)}&appid=${process.env.OPENWEATHER_API_KEY}`;
 
     const response = await fetch(url);
     const data = await response.json();
