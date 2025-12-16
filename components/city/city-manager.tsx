@@ -1,87 +1,71 @@
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
 import { Plus, MapPin, Edit2, Cloud } from "lucide-react";
 
 import { CityForm } from "./city-form";
 import { CityList } from "./city-list";
 import { CardWrapper } from "@/components/ui/card-wrapper";
-import { City, CityManagerProps } from "./types";
-import { getWeather } from "@/actions/weather";
-import { WeatherData } from "@/components/weather/types";
 import { WeatherCard } from "@/components/weather/weather-card";
 import { capitalize } from "@/lib/utils";
+import { useWeather } from "@/hooks/use-weather";
+import { useCities } from "@/hooks/use-cities";
+import { City, CityAction, CityManagerProps } from "./types";
 
 export const CityManager = ({ initialCities }: CityManagerProps) => {
-  const [cities, setCities] = useState<City[]>(initialCities);
-  const [selectedCity, setSelectedCity] = useState<City | null>(null);
-  const [isEditing, setIsEditing] = useState(false);
-  const [weather, setWeather] = useState<WeatherData | null>(null);
-  const [weatherError, setWeatherError] = useState<string>();
-  const [isLoadingWeather, startWeatherTransition] = useTransition();
-
-  useEffect(() => {
-    if (!selectedCity) {
-      setWeather(null);
-      setWeatherError(undefined);
-      return;
-    }
-
-    startWeatherTransition(async () => {
-      const result = await getWeather(selectedCity.name, selectedCity.country);
-
-      if (result.error) {
-        setWeatherError(result.error);
-        setWeather(null);
-      } else if (result.data) {
-        setWeather(result.data);
-        setWeatherError(undefined);
-      }
-    });
-  }, [selectedCity]);
-
-  const handleSelectCity = (city: City) => {
-    if (selectedCity?.id === city.id) {
-      setSelectedCity(null);
-      setIsEditing(false);
-    } else {
-      setSelectedCity(city);
-      setIsEditing(false);
-    }
-  };
-
-  const handleEditCity = (city: City) => {
-    setSelectedCity(city);
-    setIsEditing(true);
-  };
-
-  const handleCancelEdit = () => {
-    setIsEditing(false);
-  };
-
-  const handleAddSuccess = (newCity: City) => {
-    setCities((prev) => [newCity, ...prev]);
-    setSelectedCity(newCity);
-  };
-
-  const handleUpdateSuccess = (updatedCity: City) => {
-    setCities((prev) =>
-      prev.map((city) => (city.id === updatedCity.id ? updatedCity : city)),
-    );
-    setSelectedCity(updatedCity);
-    setIsEditing(false);
-  };
-
-  const handleDeleteSuccess = (cityId: string) => {
-    setCities((prev) => prev.filter((city) => city.id !== cityId));
-
-    if (selectedCity?.id === cityId) {
-      setSelectedCity(null);
-      setIsEditing(false);
-    }
-  };
-
+  const {
+    cities,
+    selectedCity,
+    isEditing,
+    setCities,
+    setSelectedCity,
+    setIsEditing,
+  } = useCities(initialCities);
+  const {
+    weather,
+    error: weatherError,
+    isLoading: isLoadingWeather,
+  } = useWeather(selectedCity);
   const editingCity = isEditing ? selectedCity : null;
+
+  const handleCityAction = (action: CityAction, city: City) => {
+    switch (action) {
+      case CityAction.ADD:
+        setCities((prev) => [city, ...prev]);
+        setSelectedCity(city);
+        setIsEditing(false);
+        break;
+      case CityAction.EDIT:
+        setSelectedCity(city);
+        setIsEditing(true);
+        break;
+      case CityAction.UPDATE:
+        setCities((prev) =>
+          prev.map((existingCity) =>
+            existingCity.id === city.id ? city : existingCity,
+          ),
+        );
+        setSelectedCity(city);
+        setIsEditing(false);
+        break;
+      case CityAction.DELETE:
+        setCities((prev) =>
+          prev.filter((existingCity) => existingCity.id !== city.id),
+        );
+        if (selectedCity?.id === city.id) {
+          setSelectedCity(null);
+          setIsEditing(false);
+        }
+        break;
+      case CityAction.SELECT:
+        if (selectedCity?.id === city.id) {
+          setSelectedCity(null);
+          setIsEditing(false);
+        } else {
+          setSelectedCity(city);
+          setIsEditing(false);
+        }
+    }
+  };
 
   return (
     <div className="grid lg:grid-cols-3 gap-6">
@@ -96,9 +80,9 @@ export const CityManager = ({ initialCities }: CityManagerProps) => {
       >
         <CityForm
           editingCity={editingCity}
-          onCancelEdit={handleCancelEdit}
-          onAddSuccess={handleAddSuccess}
-          onSuccess={handleUpdateSuccess}
+          onCancelEdit={() => setIsEditing(false)}
+          onAddSuccess={(city) => handleCityAction(CityAction.ADD, city)}
+          onSuccess={(city) => handleCityAction(CityAction.UPDATE, city)}
         />
       </CardWrapper>
 
@@ -109,9 +93,11 @@ export const CityManager = ({ initialCities }: CityManagerProps) => {
       >
         <CityList
           cities={cities}
-          onEdit={handleEditCity}
-          onDelete={handleDeleteSuccess}
-          onSelect={handleSelectCity}
+          onEdit={(city) => handleCityAction(CityAction.EDIT, city)}
+          onDelete={(city) =>
+            handleCityAction(CityAction.DELETE, { id: city } as City)
+          }
+          onSelect={(city) => handleCityAction(CityAction.SELECT, city)}
           editingCityId={editingCity?.id}
           selectedCityId={selectedCity?.id}
         />

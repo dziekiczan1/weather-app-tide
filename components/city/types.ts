@@ -50,3 +50,13 @@ export interface CityEmptyStateProps {
 export interface CityManagerProps {
   initialCities: City[];
 }
+
+export const CityAction = {
+  ADD: "add",
+  EDIT: "edit",
+  UPDATE: "update",
+  DELETE: "delete",
+  SELECT: "select",
+} as const;
+
+export type CityAction = (typeof CityAction)[keyof typeof CityAction];
