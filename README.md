@@ -136,4 +136,4 @@ This project is open source and available under the [MIT License](LICENSE).
 
 **dziekiczan1**
 
-- GitHub: [@dziekiczan1](https://github.com/dziekiczan1)
+- GitHub: [Piotr Rzadkowolski](https://github.com/dziekiczan1)

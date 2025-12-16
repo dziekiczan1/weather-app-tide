@@ -1,17 +1,27 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import { Inter } from "next/font/google";
 
 import { Header } from "@/components/layout/header";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
+  display: "swap",
+  fallback: ["Arial", "sans-serif"],
 });
 
 export const metadata: Metadata = {
-  title: "Weather app",
-  description: "Weather app",
+  title: "Weather App Tide - Real-time Weather for Your Cities",
+  description:
+    "A modern weather application to track weather in your favorite cities. Built with Next.js 16, TypeScript, and OpenWeather API.",
+  keywords: ["weather", "forecast", "cities", "nextjs", "typescript"],
+  authors: [{ name: "Piotr Rzadkowolski" }],
+  openGraph: {
+    title: "Weather App Tide",
+    description: "Track weather in your favorite cities",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
@@ -22,7 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} antialiased min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white p-4 md:p-8`}
+        className={`${inter.variable} antialiased min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white p-4 md:p-8`}
       >
         <Header />
         {children}
