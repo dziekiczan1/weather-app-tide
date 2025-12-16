@@ -13,6 +13,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { CityItemProps } from "./types";
+import { useState } from "react";
 
 export const CityItem = ({
   city,
@@ -23,6 +24,7 @@ export const CityItem = ({
   onDelete,
   onSelect,
 }: CityItemProps) => {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const getIcon = () => {
     if (isBeingEdited) return <Edit2 className="w-4 h-4 text-white" />;
     if (isSelected) return <Check className="w-4 h-4 text-white" />;
@@ -47,7 +49,10 @@ export const CityItem = ({
 
   return (
     <div
-      onClick={onSelect}
+      onClick={() => {
+        if (isDialogOpen) return;
+        onSelect();
+      }}
       className={cn(
         "group flex items-center gap-3 p-3 rounded-md transition-all duration-200 h-full cursor-pointer border",
         getContainerStyles(),
@@ -100,7 +105,7 @@ export const CityItem = ({
           <Edit2 className="w-4 h-4 text-slate-400 hover:text-white" />
         </button>
 
-        <AlertDialog>
+        <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <AlertDialogTrigger asChild>
             <button
               onClick={(e) => e.stopPropagation()}
@@ -122,7 +127,7 @@ export const CityItem = ({
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel className="bg-white/5 border-white/10 text-white hover:bg-white/10">
+              <AlertDialogCancel className="bg-white/5 border-white/10 text-white hover:bg-white/10 hover:text-white">
                 Cancel
               </AlertDialogCancel>
               <AlertDialogAction
