@@ -4,7 +4,7 @@ import { useState, useRef, useTransition } from "react";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { cn } from "@/lib/utils";
 import { deleteCity } from "@/actions/city";
-import { CityListProps, ITEM_HEIGHT, ITEM_TOTAL } from "./types";
+import { CityListProps, EmptyState, ITEM_HEIGHT, ITEM_TOTAL } from "./types";
 import { CityItem } from "./city-item";
 import { CitySearch } from "./city-search";
 import { CityEmptyState } from "./city-empty-state";
@@ -52,7 +52,7 @@ export const CityList = ({
   };
 
   if (cities.length === 0) {
-    return <CityEmptyState type="no-cities" />;
+    return <CityEmptyState type={EmptyState.NOCITIES} />;
   }
 
   return (
@@ -65,7 +65,7 @@ export const CityList = ({
       />
 
       {filteredCities.length === 0 && searchQuery ? (
-        <CityEmptyState type="no-results" />
+        <CityEmptyState type={EmptyState.NORESULTS} />
       ) : (
         <div
           ref={parentRef}

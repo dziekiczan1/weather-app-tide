@@ -1,9 +1,9 @@
 import { MapPin, SearchX } from "lucide-react";
 
-import { CityEmptyStateProps } from "./types";
+import { CityEmptyStateProps, EmptyState } from "./types";
 
 export const CityEmptyState = ({ type }: CityEmptyStateProps) => {
-  if (type === "no-cities") {
+  if (type === EmptyState.NOCITIES) {
     return (
       <div className="text-center py-8">
         <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/5 mb-4">

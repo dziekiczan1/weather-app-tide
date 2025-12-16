@@ -43,10 +43,6 @@ export interface CitySearchProps {
   filteredCount: number;
 }
 
-export interface CityEmptyStateProps {
-  type: "no-cities" | "no-results";
-}
-
 export interface CityManagerProps {
   initialCities: City[];
 }
@@ -59,4 +55,14 @@ export const CityAction = {
   SELECT: "select",
 } as const;
 
+export const EmptyState = {
+  NOCITIES: "no-cities",
+  NORESULTS: "no-results",
+} as const;
+
 export type CityAction = (typeof CityAction)[keyof typeof CityAction];
+export type EmptyStateType = (typeof EmptyState)[keyof typeof EmptyState];
+
+export interface CityEmptyStateProps {
+  type: EmptyStateType;
+}

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { MapPin, Trash2, Edit2, Check } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -13,7 +14,6 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { CityItemProps } from "./types";
-import { useState } from "react";
 
 export const CityItem = ({
   city,
