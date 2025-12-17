@@ -21,7 +21,3 @@ export const SUCCESS_MESSAGES = {
   CITY_UPDATED: "City updated successfully!",
   CITY_DELETED: "City deleted successfully!",
 } as const;
-
-export const CACHE_TIMES = {
-  WEATHER: 300,
-} as const;
