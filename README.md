@@ -17,6 +17,7 @@ A modern weather application built with Next.js 16, featuring city management an
 - **Framework:** [Next.js 16](https://nextjs.org/)
 - **Language:** [TypeScript](https://www.typescriptlang.org/)
 - **Database:** [PostgreSQL](https://www.postgresql.org/) with [Prisma ORM](https://www.prisma.io/)
+- **Caching & Data Sync:** [TanStack Query (React Query)](https://tanstack.com/query/latest)
 - **Styling:** [Tailwind CSS 4](https://tailwindcss.com/)
 - **UI Components:** [Radix UI](https://www.radix-ui.com/) + [shadcn/ui](https://ui.shadcn.com/)
 - **Forms:** [React Hook Form](https://react-hook-form.com/) + [Zod](https://zod.dev/)
@@ -47,7 +48,11 @@ weather-app-tide/
 │   │   └── types.ts
 │   ├── layout/           # Layout components
 │   └── ui/               # UI primitives (shadcn)
+├── hooks/                # Hooks
+│   ├── use-cities.ts     # City data hooks
+│   └── use-weather.ts    # Weather data hooks
 ├── lib/                  # Utilities
+│   ├── api-constants.ts  # API constants
 │   ├── db.ts             # Prisma client
 │   └── utils.ts          # Helper functions
 ├── prisma/
@@ -83,7 +88,7 @@ weather-app-tide/
    Create a `.env` file in the root directory:
 
    ```env
-   DATABASE_URL="postgresql://user:password@localhost: 5432/weather_app"
+   DATABASE_URL="postgresql://user:password@localhost:5432/weather_app_tide"
    OPENWEATHER_API_KEY="your_openweather_api_key"
    ```
 
