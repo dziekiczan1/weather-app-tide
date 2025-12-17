@@ -90,6 +90,7 @@ export const CityItem = ({
 
       <div className="flex items-center gap-1 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-200">
         <button
+          aria-label={`Edit city ${city.name}`}
           onClick={(e) => {
             e.stopPropagation();
             onEdit();
@@ -108,6 +109,7 @@ export const CityItem = ({
         <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <AlertDialogTrigger asChild>
             <button
+              aria-label={`Delete city ${city.name}`}
               onClick={(e) => e.stopPropagation()}
               disabled={isPending}
               className="p-2 rounded-lg hover:bg-red-500/20 transition-colors"
