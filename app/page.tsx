@@ -2,7 +2,7 @@ import { getCities } from "@/actions/city";
 import { CityManager } from "@/components/city/city-manager";
 
 export default async function Page() {
-  const cities = await getCities();
+  const { data: initialCities = [] } = await getCities();
 
   return (
     <main>
@@ -13,7 +13,7 @@ export default async function Page() {
       </div>
 
       <div className="relative z-10 max-w-6xl mx-auto">
-        <CityManager initialCities={cities} />
+        <CityManager initialCities={initialCities} />
       </div>
     </main>
   );

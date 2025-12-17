@@ -88,10 +88,10 @@ export const CityForm = ({
             return;
           }
 
-          if (data?.success && data.city) {
+          if (data?.success && data.data) {
             form.reset(defaultFormValues);
             setSuccess(data.success);
-            onAddSuccess?.(data.city);
+            onAddSuccess?.(data.data);
           }
         }
       } catch {

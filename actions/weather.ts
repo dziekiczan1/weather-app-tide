@@ -1,13 +1,14 @@
 "use server";
 
 import { OPENWEATHER_BASE_URL, WeatherData } from "@/components/weather/types";
+import { ActionResponse, ERROR_MESSAGES } from "@/lib/api-constants";
 
 export const getWeather = async (
   cityName: string,
   country: string,
-): Promise<{ data?: WeatherData; error?: string }> => {
+): Promise<ActionResponse<WeatherData>> => {
   if (!process.env.OPENWEATHER_API_KEY) {
-    return { error: "API key not configured" };
+    return { error: ERROR_MESSAGES.API_KEY_MISSING };
   }
 
   try {
@@ -18,9 +19,9 @@ export const getWeather = async (
 
     if (!response.ok) {
       if (response.status === 404) {
-        return { error: "City not found" };
+        return { error: ERROR_MESSAGES.CITY_NOT_FOUND };
       }
-      return { error: "Failed to fetch weather data" };
+      return { error: ERROR_MESSAGES.UNKNOWN_ERROR };
     }
 
     const data = await response.json();
@@ -38,6 +39,6 @@ export const getWeather = async (
 
     return { data: weatherData };
   } catch (error) {
-    return { error: "Something went wrong" };
+    return { error: ERROR_MESSAGES.UNKNOWN_ERROR };
   }
 };

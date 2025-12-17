@@ -5,12 +5,20 @@ import * as z from "zod";
 import { CitySchema } from "@/schemas";
 import { db } from "@/lib/db";
 import { OPENWEATHER_BASE_URL } from "@/components/weather/types";
+import {
+  ActionResponse,
+  ERROR_MESSAGES,
+  SUCCESS_MESSAGES,
+} from "@/lib/api-constants";
+import { City } from "@/components/city/types";
 
-export const addCity = async (values: z.infer<typeof CitySchema>) => {
+export const addCity = async (
+  values: z.infer<typeof CitySchema>,
+): Promise<ActionResponse<City>> => {
   const validatedFields = CitySchema.safeParse(values);
 
   if (!validatedFields.success) {
-    return { error: "Invalid fields!" };
+    return { error: ERROR_MESSAGES.INVALID_FIELDS };
   }
 
   const { name, country } = validatedFields.data;
@@ -19,7 +27,7 @@ export const addCity = async (values: z.infer<typeof CitySchema>) => {
 
   if (!cityValidation.valid) {
     return {
-      error: "City not found. Please check the city name and country code.",
+      error: ERROR_MESSAGES.CITY_NOT_FOUND,
     };
   }
 
@@ -31,7 +39,7 @@ export const addCity = async (values: z.infer<typeof CitySchema>) => {
   });
 
   if (existingCity) {
-    return { error: "City already exists!" };
+    return { error: ERROR_MESSAGES.CITY_EXISTS };
   }
 
   try {
@@ -43,11 +51,11 @@ export const addCity = async (values: z.infer<typeof CitySchema>) => {
     });
 
     return {
-      success: "City added successfully!",
-      city: city,
+      success: SUCCESS_MESSAGES.CITY_ADDED,
+      data: city,
     };
   } catch (error) {
-    return { error: "Failed to add city!" };
+    return { error: ERROR_MESSAGES.FAILED_TO_ADD };
   }
 };
 
@@ -80,55 +88,59 @@ const validateCityExists = async (
   }
 };
 
-export const getCities = async () => {
-  const cities = await db.city.findMany({
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
-
-  return cities;
+export const getCities = async (): Promise<ActionResponse<City[]>> => {
+  try {
+    const cities = await db.city.findMany({
+      orderBy: { createdAt: "desc" },
+    });
+    return { data: cities };
+  } catch (error) {
+    return { error: ERROR_MESSAGES.UNKNOWN_ERROR, data: [] };
+  }
 };
 
-export const deleteCity = async (cityId: string) => {
+export const deleteCity = async (cityId: string): Promise<ActionResponse> => {
   try {
     await db.city.delete({
-      where: {
-        id: cityId,
-      },
+      where: { id: cityId },
     });
+    return { success: SUCCESS_MESSAGES.CITY_DELETED };
   } catch (error) {
-    return { error: "Failed to delete city!" };
+    return { error: ERROR_MESSAGES.FAILED_TO_DELETE };
   }
-
-  return { success: "City deleted successfully!" };
 };
 
 export const updateCity = async (
   cityId: string,
   values: z.infer<typeof CitySchema>,
-) => {
+): Promise<ActionResponse<City>> => {
   const validatedFields = CitySchema.safeParse(values);
 
   if (!validatedFields.success) {
-    return { error: "Invalid fields!" };
+    return { error: ERROR_MESSAGES.INVALID_FIELDS };
   }
 
   const { name, country } = validatedFields.data;
 
+  const cityValidation = await validateCityExists(name, country);
+
+  if (!cityValidation.valid) {
+    return {
+      error: ERROR_MESSAGES.CITY_NOT_FOUND,
+    };
+  }
+
   try {
-    await db.city.update({
-      where: {
-        id: cityId,
-      },
+    const city = await db.city.update({
+      where: { id: cityId },
       data: {
         name: name.toLowerCase(),
         country: country.toUpperCase(),
       },
     });
-  } catch (error) {
-    return { error: "Failed to update city!" };
-  }
 
-  return { success: "City updated successfully!" };
+    return { success: SUCCESS_MESSAGES.CITY_UPDATED, data: city };
+  } catch (error) {
+    return { error: ERROR_MESSAGES.FAILED_TO_UPDATE };
+  }
 };
