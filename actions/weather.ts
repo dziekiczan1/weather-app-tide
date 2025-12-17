@@ -1,7 +1,11 @@
 "use server";
 
 import { OPENWEATHER_BASE_URL, WeatherData } from "@/components/weather/types";
-import { ActionResponse, ERROR_MESSAGES } from "@/lib/api-constants";
+import {
+  ActionResponse,
+  CACHE_TIMES,
+  ERROR_MESSAGES,
+} from "@/lib/api-constants";
 
 export const getWeather = async (
   cityName: string,
@@ -15,7 +19,9 @@ export const getWeather = async (
     const query = `${cityName},${country}`;
     const url = `${OPENWEATHER_BASE_URL}?q=${encodeURIComponent(query)}&appid=${process.env.OPENWEATHER_API_KEY}&units=metric`;
 
-    const response = await fetch(url, { next: { revalidate: 300 } });
+    const response = await fetch(url, {
+      next: { revalidate: CACHE_TIMES.WEATHER },
+    });
 
     if (!response.ok) {
       if (response.status === 404) {
