@@ -13,6 +13,7 @@ export const ERROR_MESSAGES = {
   FAILED_TO_UPDATE: "Failed to update city!",
   FAILED_TO_DELETE: "Failed to delete city!",
   API_KEY_MISSING: "API key not configured",
+  NO_CITY_SELECTED: "No city selected. Please choose a city.",
   UNKNOWN_ERROR: "Unknown error occurred.",
 } as const;
 
@@ -21,3 +22,7 @@ export const SUCCESS_MESSAGES = {
   CITY_UPDATED: "City updated successfully!",
   CITY_DELETED: "City deleted successfully!",
 } as const;
+
+export const CACHE_TIME = {
+  WEATHER: 5 * 60 * 1000,
+};
